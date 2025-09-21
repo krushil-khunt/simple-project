@@ -31,11 +31,12 @@ router.get("/new",isLoggeIn,(req,res)=>{
 //Show rout
 router.get("/:id",wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
-    const listing=await Listing.findById(id).populate("reviews");
+    const listing=await Listing.findById(id).populate("reviews").populate("owner");
     if(!listing){
         req.flash("error","Listing you equested for dose not exist!");
         return res.redirect("/listing");
     }
+    console.log(listing);
     res.render("listing/show.ejs",{listing})
 }));
 
@@ -46,6 +47,7 @@ router.post(
     validateListing,
     wrapAsycn (async(req,res,next)=>{
     const newlisting= new Listing(req.body.listing);
+    newlisting.owner=req.user._id;
     await newlisting.save();
     req.flash("succes","New Listing Created");
     res.redirect("/listing");
