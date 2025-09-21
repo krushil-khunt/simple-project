@@ -1,21 +1,10 @@
 const express=require("express");
 const router=express.Router();
 const wrapAsycn=require("../utils/wrapAsync.js");
-const {listingSchema}=require("../schema.js");
-const ExpressError=require("../utils/ExpressError.js");
 const Listing=require("../models/listing.js");
-const {isLoggeIn}=require("../middleware.js")
+const {isLoggeIn,isOwner,validateListing}=require("../middleware.js")
 
 
-const validateListing=(req,res,next)=>{
-    let {error} =listingSchema.validate(req.body);
-    if(error){
-        let errmsg=error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errmsg);
-    }else{
-        next();
-    }
-}
 
 //index routs
 router.get("/",wrapAsycn (async(req,res,next)=>{
@@ -55,7 +44,7 @@ router.post(
 
 
 // Edit Route
-router.get("/:id/edit",isLoggeIn,wrapAsycn (async(req,res,next)=>{
+router.get("/:id/edit",isOwner,isLoggeIn,wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
     if(!listing){
@@ -66,7 +55,12 @@ router.get("/:id/edit",isLoggeIn,wrapAsycn (async(req,res,next)=>{
 }));
 
 //Update route
-router.put("/:id",isLoggeIn,validateListing,wrapAsycn (async(req,res,next)=>{
+router.put(
+    "/:id",
+    isLoggeIn,
+    isOwner,
+    validateListing,
+    wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     req.flash("succes","Listinh Updated");
@@ -74,7 +68,7 @@ router.put("/:id",isLoggeIn,validateListing,wrapAsycn (async(req,res,next)=>{
 }));
 
 //delete route
-router.delete("/:id",isLoggeIn,wrapAsycn (async(req,res,next)=>{
+router.delete("/:id",isOwner,isLoggeIn,wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     let deletlisting=await Listing.findByIdAndDelete(id);
     console.log(deletlisting);
