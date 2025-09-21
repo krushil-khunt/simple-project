@@ -14,14 +14,19 @@ router.post("/signup",wrapAsycn(async(req,res)=>{
         const newuser=new User({email,username});
         const registeruser=await User.register(newuser,password);
         console.log(registeruser);
-        req.flash("succes","Welcome to Airban");
-        res.redirect("/listing");
+        req.login(registeruser,(err)=>{
+            if(err){
+                return next(err);
+            }
+            req.flash("succes","Welcome to Airban");
+            res.redirect("/listing");
+        })
     }catch(e){
         req.flash("error",e.message);
         res.redirect("/signup");
     }
-
 }));
+
 
 router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
