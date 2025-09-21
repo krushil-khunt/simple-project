@@ -3,6 +3,7 @@ const router=express.Router({mergeParams:true});
 const User=require("../models/user.js");
 const wrapAsycn=require("../utils/wrapAsync.js");
 const passport = require("passport");
+const {saveRedirectUrl}=require("../middleware.js");
 
 router.get("/signup",(req,res)=>{
     res.render("users/singup.ejs");
@@ -34,13 +35,15 @@ router.get("/login",(req,res)=>{
 
 router.post(
     "/login",
+    saveRedirectUrl,
     passport.authenticate("local",{
         failureRedirect: '/login',
         failureFlash:true 
     }),
     async(req,res)=>{
-        req.flash("succes","welcome back to Airban! You are Logged in!");  
-        res.redirect("/listing");  
+        req.flash("succes","welcome back to Airban! You are Logged in!"); 
+        let  redirectUrl=res.locals.redirectUrl || "/listing";
+        res.redirect(redirectUrl);  
     });
 
 router.get("/logout",(req,res,next)=>{
