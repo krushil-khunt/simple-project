@@ -2,7 +2,7 @@ const express=require("express");
 const router=express.Router();
 const wrapAsycn=require("../utils/wrapAsync.js");
 const Listing=require("../models/listing.js");
-const {isLoggeIn,isOwner,validateListing}=require("../middleware.js")
+const {isLoggeIn,isOwner,validateListing}=require("../middleware.js");
 
 
 
@@ -20,7 +20,14 @@ router.get("/new",isLoggeIn,(req,res)=>{
 //Show rout
 router.get("/:id",wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
-    const listing=await Listing.findById(id).populate("reviews").populate("owner");
+    const listing=await Listing.findById(id)
+    .populate({
+        path:"reviews",
+        populate:{
+            path:"author",
+        },
+    })
+    .populate("owner");
     if(!listing){
         req.flash("error","Listing you equested for dose not exist!");
         return res.redirect("/listing");
