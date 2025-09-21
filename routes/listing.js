@@ -4,6 +4,7 @@ const wrapAsycn=require("../utils/wrapAsync.js");
 const {listingSchema}=require("../schema.js");
 const ExpressError=require("../utils/ExpressError.js");
 const Listing=require("../models/listing.js");
+const {isLoggeIn}=require("../middleware.js")
 
 
 const validateListing=(req,res,next)=>{
@@ -16,7 +17,6 @@ const validateListing=(req,res,next)=>{
     }
 }
 
-
 //index routs
 router.get("/",wrapAsycn (async(req,res,next)=>{
    const alllisitn=await Listing.find({});
@@ -24,11 +24,11 @@ router.get("/",wrapAsycn (async(req,res,next)=>{
 }));
 
 // new Rout
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggeIn,(req,res)=>{
     res.render("listing/new.ejs");
 });
 
-//Shoe rout
+//Show rout
 router.get("/:id",wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id).populate("reviews");
@@ -42,6 +42,7 @@ router.get("/:id",wrapAsycn (async(req,res,next)=>{
 // create routs
 router.post(
     "/",
+    isLoggeIn,
     validateListing,
     wrapAsycn (async(req,res,next)=>{
     const newlisting= new Listing(req.body.listing);
@@ -52,7 +53,7 @@ router.post(
 
 
 // Edit Route
-router.get("/:id/edit",wrapAsycn (async(req,res,next)=>{
+router.get("/:id/edit",isLoggeIn,wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     const listing=await Listing.findById(id);
     if(!listing){
@@ -63,7 +64,7 @@ router.get("/:id/edit",wrapAsycn (async(req,res,next)=>{
 }));
 
 //Update route
-router.put("/:id",validateListing,wrapAsycn (async(req,res,next)=>{
+router.put("/:id",isLoggeIn,validateListing,wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     req.flash("succes","Listinh Updated");
@@ -71,7 +72,7 @@ router.put("/:id",validateListing,wrapAsycn (async(req,res,next)=>{
 }));
 
 //delete route
-router.delete("/:id",wrapAsycn (async(req,res,next)=>{
+router.delete("/:id",isLoggeIn,wrapAsycn (async(req,res,next)=>{
     let {id}=req.params;
     let deletlisting=await Listing.findByIdAndDelete(id);
     console.log(deletlisting);
