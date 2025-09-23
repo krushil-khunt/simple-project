@@ -6,34 +6,25 @@ const Review=require("../models/review.js");
 const Listing=require("../models/listing.js");
 const {validateReview,isLoggeIn,isReviewAuthor}=require("../middleware.js")
 
-
+const reviewController=require("../controllers/review.js");
 
 
 // Reviews in POST route
 
-router.post("/",isLoggeIn,validateReview,wrapAsycn (async(req,res,next)=>{
-    console.log(req.params.id);
-    let listing= await Listing.findById(req.params.id);
-    let newReview=new Review(req.body.review);
-    newReview.author=req.user._id;
-
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-    req.flash("succes","New Reviews Created");
-    res.redirect(`/listing/${listing._id}`)
-}));
+router.post(
+    "/",
+    isLoggeIn,
+    validateReview,
+    wrapAsycn (reviewController.createReview)
+);
 
 //Delet Review Route
 
-router.delete("/:reviewId",isLoggeIn,isReviewAuthor,wrapAsycn(async(req,res)=>{
-    let {id,reviewId}=req.params;
-
-    await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-    req.flash("succes","Reviews Delete");
-    res.redirect(`/listing/${id}`);
-}))
+router.delete(
+    "/:reviewId",
+    isLoggeIn,
+    isReviewAuthor,
+    wrapAsycn(reviewController.destoryReview)
+);
 
 module.exports=router;

@@ -5,33 +5,14 @@ const wrapAsycn=require("../utils/wrapAsync.js");
 const passport = require("passport");
 const {saveRedirectUrl}=require("../middleware.js");
 
-router.get("/signup",(req,res)=>{
-    res.render("users/singup.ejs");
-})
+const userController=require("../controllers/user.js");
 
-router.post("/signup",wrapAsycn(async(req,res)=>{
-    try{
-        let {username,email,password}=req.body;
-        const newuser=new User({email,username});
-        const registeruser=await User.register(newuser,password);
-        console.log(registeruser);
-        req.login(registeruser,(err)=>{
-            if(err){
-                return next(err);
-            }
-            req.flash("succes","Welcome to Airban");
-            res.redirect("/listing");
-        })
-    }catch(e){
-        req.flash("error",e.message);
-        res.redirect("/signup");
-    }
-}));
+router.get("/signup",userController.renderSignupFrom)
+
+router.post("/signup",wrapAsycn(userController.singup));
 
 
-router.get("/login",(req,res)=>{
-    res.render("users/login.ejs");
-})
+router.get("/login",userController.renderLoginFrom);
 
 router.post(
     "/login",
@@ -40,19 +21,9 @@ router.post(
         failureRedirect: '/login',
         failureFlash:true 
     }),
-    async(req,res)=>{
-        req.flash("succes","welcome back to Airban! You are Logged in!"); 
-        let  redirectUrl=res.locals.redirectUrl || "/listing";
-        res.redirect(redirectUrl);  
-    });
+    userController.login
+);
 
-router.get("/logout",(req,res,next)=>{
-    req.logOut((err)=>{
-        if(err){
-            return next(err);
-        }
-        req.flash("succes","you are logged out!")
-        res.redirect("/listing")
-    })
-})
+router.get("/logout",userController.logout);
+
 module.exports = router;
