@@ -6,38 +6,29 @@ const {isLoggeIn,isOwner,validateListing}=require("../middleware.js");
 
 const listingController= require("../controllers/listing.js");
 
-//index routs
-router.get("/",wrapAsycn (listingController.index));
-
-// new Rout
-router.get("/new",isLoggeIn,listingController.rendernewfrom);
-
-//Show rout
-router.get("/:id",wrapAsycn(listingController.showListing)
-);
-
-// create routs
-router.post(
-    "/",
+// index routs & create routs
+router
+  .route("/")
+  .get(wrapAsycn(listingController.index))
+  .post(
     isLoggeIn,
     validateListing,
-    wrapAsycn (listingController.creatingListing)
-);
+    wrapAsycn(listingController.creatingListing)
+  );
 
+// new Rout
+router.get("/new",isLoggeIn,listingController.rendernewfrom);  
 
-// Edit Route
-router.get("/:id/edit",isOwner,isLoggeIn,wrapAsycn (listingController.renderEditfrom));
-
-//Update route
-router.put(
-    "/:id",
+router.route("/:id")
+  .get(wrapAsycn(listingController.showListing))//Show rout
+  .put(//Update route
     isLoggeIn,
     isOwner,
     validateListing,
-    wrapAsycn (listingController.updateListing)
-);
+    wrapAsycn (listingController.updateListing))
+  .delete(isOwner,isLoggeIn,wrapAsycn (listingController.destoryListing));//delete route
 
-//delete route
-router.delete("/:id",isOwner,isLoggeIn,wrapAsycn (listingController.destoryListing));
+// Edit Route
+router.get("/:id/edit",isOwner,isLoggeIn,wrapAsycn (listingController.renderEditfrom));
 
 module.exports=router;
