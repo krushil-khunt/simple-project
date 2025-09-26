@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !="production"){
+    require('dotenv').config();
+}
+
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -87,6 +92,7 @@ app.all(/.*/, (req, res, next) => {
 });
 
 app.use((err,req,res,next)=>{
+    console.error(err); 
     let {status=500,message="Something Went Wrong"}=err;
     res.status(status).render("Error.ejs",{message});
     // res.status(status).send(message);

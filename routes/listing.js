@@ -3,18 +3,25 @@ const router=express.Router();
 const wrapAsycn=require("../utils/wrapAsync.js");
 const Listing=require("../models/listing.js");
 const {isLoggeIn,isOwner,validateListing}=require("../middleware.js");
-
 const listingController= require("../controllers/listing.js");
+const multer  = require('multer');
+const {storage}=require("../coludConfig.js");
+const upload = multer({ storage });
+
+
 
 // index routs & create routs
 router
   .route("/")
   .get(wrapAsycn(listingController.index))
-  .post(
-    isLoggeIn,
-    validateListing,
-    wrapAsycn(listingController.creatingListing)
-  );
+  // .post(
+  //   isLoggeIn,
+  //   validateListing,
+  //   wrapAsycn(listingController.creatingListing)
+  // );
+  .post(upload.single('listing[image]'),(req,res)=>{
+    res.send(req.file);
+  })
 
 // new Rout
 router.get("/new",isLoggeIn,listingController.rendernewfrom);  
