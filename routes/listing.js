@@ -14,14 +14,12 @@ const upload = multer({ storage });
 router
   .route("/")
   .get(wrapAsycn(listingController.index))
-  // .post(
-  //   isLoggeIn,
-  //   validateListing,
-  //   wrapAsycn(listingController.creatingListing)
-  // );
-  .post(upload.single('listing[image]'),(req,res)=>{
-    res.send(req.file);
-  })
+  .post(
+    isLoggeIn,
+    validateListing,
+    upload.single('listing[image]'),
+    wrapAsycn(listingController.creatingListing)
+  );
 
 // new Rout
 router.get("/new",isLoggeIn,listingController.rendernewfrom);  
