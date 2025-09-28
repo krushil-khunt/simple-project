@@ -24,6 +24,10 @@ const listingSchema = new Schema({
   owner:{
     type:Schema.Types.ObjectId,
     ref:"User",
+  },
+  category:{
+    type:String,
+    enum:["Trending","Rooms","Iconic Cities","Mountain","Castles","Amazing Pools","Camping","Arctic"],
   }
 });
 //listing delet kari tyare tena review pan delet thya jay tena mate
