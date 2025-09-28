@@ -29,8 +29,10 @@ router.route("/:id")
   .put(//Update route
     isLoggeIn,
     isOwner,
+    upload.single('listing[image]'),
     validateListing,
-    wrapAsycn (listingController.updateListing))
+    wrapAsycn (listingController.updateListing)
+  )
   .delete(isOwner,isLoggeIn,wrapAsycn (listingController.destoryListing));//delete route
 
 // Edit Route

@@ -50,7 +50,15 @@ module.exports.renderEditfrom=async(req,res,next)=>{
 
 module.exports.updateListing=async(req,res,next)=>{
     let {id}=req.params;
-    await Listing.findByIdAndUpdate(id,{...req.body.listing});
+    let listing=await Listing.findByIdAndUpdate(id,{...req.body.listing});
+
+    if(typeof req.file !=="undefined"){
+        let url =req.file.path;
+        let filename=req.file.filename;
+        listing.image={url,filename};
+        await listing.save();
+    }
+    
     req.flash("succes","Listinh Updated");
     res.redirect(`/listing/${id}`);
 };
