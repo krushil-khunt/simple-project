@@ -45,8 +45,11 @@ module.exports.renderEditfrom=async(req,res,next)=>{
         req.flash("error","Listing you equested for dose not exist!");
         return res.redirect("/listing");
     }
-    res.render("listing/edit.ejs",{listing});
+    let originalImgUrl = listing.image.url.replace("/upload/", "/upload/w_350/");
+    res.render("listing/edit.ejs",{listing,originalImgUrl});
 };
+
+
 
 module.exports.updateListing=async(req,res,next)=>{
     let {id}=req.params;
