@@ -67,9 +67,9 @@ const sessionOpstion={
     }
 };
 
-// app.get("/",(req,res)=>{
-//     res.send("hi hello");
-// })
+app.get("/", (req, res) => {
+    res.redirect("/listing");
+});
 
 
 app.use(session(sessionOpstion));
