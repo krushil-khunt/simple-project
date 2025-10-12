@@ -1,8 +1,20 @@
+<<<<<<< HEAD
+=======
+if(process.env.NODE_ENV !="production"){
+    require('dotenv').config();
+}
+
+>>>>>>> 55e972f (Initial code of project)
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
 const Listing = require("../models/listing.js");
 
+<<<<<<< HEAD
 const mongurl="mongodb://127.0.0.1:27017/airban";
+=======
+// const mongurl="mongodb://127.0.0.1:27017/airban";
+const dbUrl=process.env.MONGOATLAST_URL;
+>>>>>>> 55e972f (Initial code of project)
 
 main()
   .then(() => {
@@ -13,7 +25,11 @@ main()
   });
 
 async function main() {
+<<<<<<< HEAD
   await mongoose.connect(mongurl);
+=======
+  await mongoose.connect(dbUrl);
+>>>>>>> 55e972f (Initial code of project)
 }
 
 const initDB= async()=>{
@@ -23,3 +39,9 @@ const initDB= async()=>{
     console.log("data was innislise");
 }
 initDB();
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 55e972f (Initial code of project)

@@ -14,7 +14,11 @@
                 <p class="card-text"><%=listing.country%></p>
         </div>
     </div> 
+<<<<<<< HEAD
     <% if(currUser &&listing.owner._id.equals(currUser._id)) {%>
+=======
+    <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
+>>>>>>> 55e972f (Initial code of project)
         <div class="btns">
             <a href="/listing/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
 
@@ -75,14 +79,25 @@
                          <p class="card-text"><%= review.comment %></p>
                           
                     </div>
+<<<<<<< HEAD
                      <% if(currUser && review.author._id.equals(currUser._id)) { %>
                             <form class="mb-3" method="post" action="/listing/<%= listing._id %>/review/<%= review._id %>?_method=delete">
                                 <button class="btn btn-sm btn-dark">Delet</button>
                             </form>
+=======
+                    <% if(currUser && review.author._id.equals(currUser._id)) { %>
+                    <form class="mb-3" method="post" action="/listing/<%= listing._id %>/review/<%= review._id %>?_method=delete">
+                        <button class="btn btn-sm btn-dark">Delete</button>
+                    </form>
+>>>>>>> 55e972f (Initial code of project)
                     <% } %>
                 </div>
             <% } %>
         </div>
     <% } %>
     </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> 55e972f (Initial code of project)
