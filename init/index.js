@@ -1,13 +1,20 @@
+
 if (process.env.NODE_ENV != "production") {
     require("dotenv").config();
 }
+
+
+require("dotenv").config({ path: "../.env" });
 
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
 const Listing = require("../models/listing.js");
 
+
 // Use local DB if no Atlas URL is provided
-const dbUrl = process.env.MONGOATLAST_URL || "mongodb://127.0.0.1:27017/airban";
+
+const dbUrl=process.env.MONGOATLAST_URL;
+
 
 main()
   .then(() => {
@@ -20,6 +27,7 @@ main()
 async function main() {
   await mongoose.connect(dbUrl);
 }
+
 
 const initDB = async () => {
   await Listing.deleteMany({});

@@ -89,15 +89,6 @@ app.use((req,res,next)=>{
     next();
 })
 
-// app.get("/demouser",async(req,res)=>{
-//     let fackeuser=new User({
-//         email:"studenr@gmail.com",
-//         username:"delta-student"
-//     });
-//     let registeruser=await User.register(fackeuser,"helloword");
-//     res.send(registeruser);
-// })
-
 app.use("/listing",listingsRouter);
 app.use("/listing/:id/review",reviewsRouter);
 app.use("/",userRouter);
@@ -111,7 +102,6 @@ app.use((err,req,res,next)=>{
     console.error(err); 
     let {status=500,message="Something Went Wrong"}=err;
     res.status(status).render("Error.ejs",{message});
-    // res.status(status).send(message);
 });
 
 app.listen(3000, () => {

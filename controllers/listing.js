@@ -1,19 +1,5 @@
 const Listing=require("../models/listing.js");
 
-// module.exports.index=async(req,res,next)=>{
-//     let { category, title } = req.query;
-//   let filter = {};
-
-//   if (category) {
-//     filter.category = category;
-//   }
-
-//   if (title) {
-//     filter.title = title;
-//   }
-//    const alllisitn=await Listing.find({});
-//    res.render("listing/index.ejs",{alllisitn});
-// }
 module.exports.index = async (req, res, next) => {
   try {
     let { category } = req.query;
