@@ -21,11 +21,7 @@ const listingsRouter=require("./routes/listing.js");
 const reviewsRouter=require("./routes/review.js");
 const userRouter=require("./routes/user.js");
 
-<<<<<<< HEAD
-
-=======
 // const mongurl="mongodb://127.0.0.1:27017/airban";
->>>>>>> 55e972f (Initial code of project)
 const dbUrl=process.env.MONGOATLAST_URL;
 
 main()

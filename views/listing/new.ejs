@@ -40,6 +40,23 @@
         <input type="text" id="location" name="listing[location]" placeholder="Jaipur, Rajasthan" class="form-control" required>
         <div class="invalid-feedback">Location should be valid</div>
       </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+          <select name="listing[category]" class="form-select" id="category">
+            <option value="Rooms">Rooms</option>
+            <option value="Iconic Cities">Iconic Cities</option>
+            <option value="Mountains">Mountains</option>
+            <option value="Castles">Castles</option>
+            <option value="Amazing Pools">Amazing Pools</option>
+            <option value="Camping">Camping</option>
+            <option value="Farms">Farms</option>
+            <option value="Artic">Artic</option>
+            <option value="Domes">Domes</option>
+            <option value="Ships">Ships</option>
+          </select>
+          <div class="valid-feedback">Category Looks Good!</div>
+          <div class="invalid-feedback">Category should be valid</div>
+      </div>
 
       <button class="btn btn-dark add-btn mt-3">Add</button>
     </form>
