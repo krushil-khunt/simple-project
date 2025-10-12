@@ -14,7 +14,7 @@ module.exports.singup=async(req,res)=>{
             if(err){
                 return next(err);
             }
-            req.flash("succes","Welcome to Airban");
+            req.flash("success","Welcome to Airban");
             res.redirect("/listing");
         })
     }catch(e){
@@ -28,7 +28,7 @@ module.exports.renderLoginFrom=(req,res)=>{
 };
 
 module.exports.login=async(req,res)=>{
-        req.flash("succes","welcome back to Airban! You are Logged in!"); 
+        req.flash("success","welcome back to Airban! You are Logged in!"); 
         let  redirectUrl=res.locals.redirectUrl || "/listing";
         res.redirect(redirectUrl);  
     };
@@ -38,7 +38,7 @@ module.exports.logout=(req,res,next)=>{
         if(err){
             return next(err);
         }
-        req.flash("succes","you are logged out!")
+        req.flash("success","you are logged out!")
         res.redirect("/listing")
     })
 }
