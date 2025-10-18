@@ -66,6 +66,14 @@
   </div>
 </div>
 
+<!-- Search Results Info -->
+<% if(typeof title !== 'undefined' && title) { %>
+  <div class="alert alert-info">
+    <h5>Search Results for: "<%= title %>"</h5>
+    <p>Found <%= alllisitn.length %> listing(s)</p>
+  </div>
+<% } %>
+
 <!-- Listings Section -->
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
         <% for(let listins of alllisitn){ %>

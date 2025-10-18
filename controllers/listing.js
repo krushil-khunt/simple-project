@@ -2,13 +2,53 @@ const Listing=require("../models/listing.js");
 
 module.exports.index = async (req, res, next) => {
   try {
-    let { category } = req.query;
+    let { category, title } = req.query;
     let filter = {};
+    
+    // Handle category filtering
     if (category) filter.category = category;
+    
+    // Handle title search
+    if (title) {
+      filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search
+    }
+    
     const alllisitn = await Listing.find(filter);
-    res.render("listing/index.ejs", { alllisitn, category });
+    res.render("listing/index.ejs", { alllisitn, category, title });
   } catch (err) {
     next(err);
+  }
+};
+
+// API endpoint for instant search
+module.exports.searchAPI = async (req, res, next) => {
+  try {
+    let { category, title } = req.query;
+    let filter = {};
+    
+    // Handle category filtering
+    if (category) filter.category = category;
+    
+    // Handle title search
+    if (title) {
+      filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search
+    }
+    
+    const alllisitn = await Listing.find(filter);
+    res.json({ 
+      success: true, 
+      listings: alllisitn, 
+      count: alllisitn.length,
+      searchTerm: title || '',
+      category: category || ''
+    });
+  } catch (err) {
+    res.json({ 
+      success: false, 
+      error: 'Search failed', 
+      listings: [], 
+      count: 0 
+    });
   }
 };
 

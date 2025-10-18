@@ -21,6 +21,9 @@ router
     wrapAsycn(listingController.creatingListing)
   );
 
+// API route for instant search
+router.get("/api/search", wrapAsycn(listingController.searchAPI));
+
 // new Rout
 router.get("/new",isLoggeIn,listingController.rendernewfrom);  
 

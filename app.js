@@ -21,7 +21,7 @@ const listingsRouter=require("./routes/listing.js");
 const reviewsRouter=require("./routes/review.js");
 const userRouter=require("./routes/user.js");
 
-// const mongurl="mongodb://127.0.0.1:27017/airban";
+
 const dbUrl=process.env.MONGOATLAST_URL;
 
 main()
@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname,"/public")));
 const store=MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
-        secret:process.env.SECRET,
+        secret:process.env.SECRET || "fallback-secret-key",
     },
     touchAfter:24*3600,
 });
@@ -57,7 +57,7 @@ store.on("error",()=>{
 
 const sessionOpstion={
     store,
-    secret:process.env.SECRET,
+    secret:process.env.SECRET || "fallback-secret-key",
     resave:false,
     saveUninitialized:true,
     cookie:{
